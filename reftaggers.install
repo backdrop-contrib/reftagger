@@ -15,10 +15,4 @@ function reftagger_uninstall() {
   variable_del('reftagger_exclude_tags');
   variable_del('reftagger_exclude_classes');
   variable_del('reftagger_css_override');
-  variable_del('googleanalytics_site_search');
-  variable_del('googleanalytics_js_scope');
-  variable_del('googleanalytics_custom');
-  variable_del('googleanalytics_roles');
-  variable_del('googleanalytics_visibility');
-  variable_del('googleanalytics_pages');
 }

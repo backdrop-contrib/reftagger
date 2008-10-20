@@ -9,8 +9,8 @@
  * @author: Nathan Rambeck <www.rambeck.com>
  */
 
-function reftagger_help($section) {
-  switch ($section) {
+function reftagger_help($path, $arg) {
+  switch ($path) {
     case 'admin/settings/reftagger':
       return t('<a href="@rt_url">RefTagger</a> is an amazing, free new web tool that instantly makes all the Bible references on your site come alive! Bare links turn into hyperlinks to the full text of the passage at Bible.Logos.com, making it easy for your readers to access the text of Scripture with just a click. Even better, RefTagger brings the text right to your readers by generating a tooltip window that pops up instantly when they hover over the reference. You can also have RefTagger add an  icon that is hyperlinked to the passage in Libronix.', array('@rt_url' => 'http://www.logos.com/reftagger'));
   }
@@ -20,22 +20,18 @@ function reftagger_perm() {
   return array('administer reftagger');
 }
 
-function reftagger_menu($maycache) {
-  $items = array();
-  if ($maycache) {
-    $items[] = array(
-      'path' => 'admin/settings/reftagger',
-      'title' => t('RefTagger'),
-      'description' => t('Configure the settings for RefTagger on your site.'),
-      'callback' => 'drupal_get_form',
-      'callback arguments' => 'reftagger_admin_settings_form',
-      'access' => user_access('administer reftagger'),
-      'type' => MENU_NORMAL_ITEM,
-    );
-  }
+function reftagger_menu() {
+  $items['admin/settings/reftagger'] = array(
+    'title' => 'RefTagger',
+    'description' => t('Configure the settings for RefTagger on your site.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('reftagger_admin_settings_form'),
+    'access arguments' => array('administer reftagger'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
   return $items;
 }
-
 
 /**
  * Implementation of hook_admin_settings() for configuring the module
@@ -185,7 +181,6 @@ function reftagger_footer($main = 0) {
   $script = implode("\n", $script_ln);
   $ext_script = 'document.write(unescape("%3Cscript src=\'" + "http://bible.logos.com/jsapi/referencetagging.js\' type=\'text/javascript\'%3E%3C/script%3E"));';
   drupal_add_js($ext_script, 'inline', 'footer');
-  //drupal_add_js('http://bible.logos.com/jsapi/referencetagging.js', 'module', 'footer');
   drupal_add_js($script, 'inline', 'footer');
   
 }
