@@ -115,10 +115,123 @@ function reftagger_admin_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Override CSS'),
     '#default_value' => variable_get('reftagger_css_override', 0),
-    '#description' => t('Override the default styling. To modify tooltip styling, check this and edit the ReferenceTagging.css stylesheet.'),
+    '#description' => t('Override the default styling. To modify tooltip styling, check this and copy the contents of the included ReferenceTagging.css stylesheet to your theme\'s stylesheet.'),
   );
 
   return system_settings_form($form);
+}
+
+/**
+ * Implementation of hook_block().
+ *
+ * Block for users to customize Reftagger
+ */
+function reftagger_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks[0]['info'] = t('Reftagger Control Panel');
+      return $blocks;
+
+    case 'configure':
+      $form['reftagger_cp_template'] = array(
+        '#type' => 'radios',
+        '#title' => t('Control Panel Template'),
+        '#options' => reftagger_cp_options(),
+        '#default_value' => variable_get('reftagger_cp_template', 'bw')
+      );
+      return $form;
+
+    case 'save':
+      variable_set('reftagger_cp_template', $edit['reftagger_cp_template']);
+      break;
+
+    case 'view':
+      switch ($delta) {
+        case 0:
+          $content = theme('reftagger_control_panel');
+          $templates = reftagger_cp_templates();
+          $cp_theme = variable_get('reftagger_cp_template', 'bw');
+          if ($cp_theme == 'custom') {
+            drupal_add_css(drupal_get_path('module', 'reftagger') .'/RefTaggerControlPanel.css');
+          } else {
+            drupal_add_link(array('rel' => 'stylesheet', 'href' => $templates[$cp_theme]['css'], 'media' => 'screen', 'type' => 'text/css'));
+          }
+
+          break;
+      }
+  }
+  if (!empty($content)) {
+    $block['subject'] = $title;
+    $block['content'] = $content;
+    return $block;
+  }
+}
+
+/**
+ * Implementation of hook_theme()
+ */
+function reftagger_theme() {
+  return array(
+    'reftagger_control_panel' => array(
+      'template' => 'reftagger-control-panel',
+      'arguments' => array(),
+    ),
+  );
+}
+
+
+/**
+ * Create an array of form options to choose a control panel template
+ */
+function reftagger_cp_options() {
+  $templates = reftagger_cp_templates();
+
+  foreach ($templates AS $key => $template) {
+    $image = '<img src="'. $template['image'] .'" border=0 />';
+    $options[$key] = $image;
+  }
+  $options['custom'] = 'Custom (copy these styles into your theme stylesheet: '. drupal_get_path('module', 'reftagger') .'/RefTaggerControlPanel.css)';
+  return $options;
+}
+
+/**
+ * Generate an array of possible control panel templates
+ */
+function reftagger_cp_templates() {
+  $templates['w'] = array(
+    'css' => 'http://bible.logos.com/Content/RefTaggerControlPanelWide.css',
+    'image' => 'http://www.logos.com/images/reftagger/reftagger-cp-w.png'
+  );
+  $templates['bw'] = array(
+    'css' => 'http://bible.logos.com/Content/RefTaggerControlPanelBlueWide.css',
+    'image' => 'http://www.logos.com/images/reftagger/reftagger-cp-bw.png'
+  );
+  $templates['dgw'] = array(
+    'css' => 'http://bible.logos.com/Content/RefTaggerControlPanelDGreyWide.css',
+    'image' => 'http://www.logos.com/images/reftagger/reftagger-cp-dgw.png'
+  );
+  $templates['lgw'] = array(
+    'css' => 'http://bible.logos.com/Content/RefTaggerControlPanelLGreyWide.css',
+    'image' => 'http://www.logos.com/images/reftagger/reftagger-cp-lgw.png'
+  );
+  $templates['n'] = array(
+    'css' => 'http://bible.logos.com/Content/RefTaggerControlPanelNarrow.css',
+    'image' => 'http://www.logos.com/images/reftagger/reftagger-cp-n.png'
+  );
+  $templates['bn'] = array(
+    'css' => 'http://bible.logos.com/Content/RefTaggerControlPanelBlueNarrow.css',
+    'image' => 'http://www.logos.com/images/reftagger/reftagger-cp-bn.png'
+  );
+  $templates['dgn'] = array(
+    'css' => 'http://bible.logos.com/Content/RefTaggerControlPanelDGreyNarrow.css',
+    'image' => 'http://www.logos.com/images/reftagger/reftagger-cp-dgn.png'
+  );
+  $templates['lgn'] = array(
+    'css' => 'http://bible.logos.com/Content/RefTaggerControlPanelLGreyNarrow.css',
+    'image' => 'http://www.logos.com/images/reftagger/reftagger-cp-lgn.png'
+  );
+
+  return $templates;
 }
 
 /**
@@ -172,8 +285,7 @@ function reftagger_footer($main = 0) {
   if (!variable_get('reftagger_tooltip_enable', 1)) {
     $script_ln[] = 'Logos.ReferenceTagging.lbsUseTooltip = false;'; 
   }
-  if(variable_get('reftagger_css_override', 0)) {
-    drupal_add_css(drupal_get_path('module', 'reftagger') . '/ReferenceTagging.css', 'module', 'screen');
+  if (variable_get('reftagger_css_override', 0)) {
     $script_ln[] = 'Logos.ReferenceTagging.lbsCssOverride = true;';
   }
   
