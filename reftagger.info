@@ -1,4 +1,8 @@
 ; $Id$
 name = "RefTagger"
 description = Adds RefTagger javascript code to all your site's pages.
-core = 6.x
+core = 7.x
+
+files[] = reftagger-control-panel.tpl.php
+files[] = reftagger.module
+files[] = reftaggers.install
