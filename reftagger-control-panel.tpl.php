@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file reftagger-control-panel.tpl.php

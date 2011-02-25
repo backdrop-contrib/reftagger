@@ -1,4 +1,3 @@
-; $Id$
 name = "RefTagger"
 description = Adds RefTagger javascript code to all your site's pages.
 core = 7.x

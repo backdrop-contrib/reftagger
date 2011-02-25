@@ -1,4 +1,3 @@
-//$Id$
 Module: RefTagger
 Author: Nathan Rambeck <www.rambeck.com>
 
