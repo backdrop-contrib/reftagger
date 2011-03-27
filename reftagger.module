@@ -1,4 +1,5 @@
 <?php
+// $Id: reftagger.module,v 1.4 2010/10/01 03:03:46 nrambeck Exp $
 
 /*
  * Drupal Module: RefTagger
@@ -24,7 +25,11 @@ function reftagger_help($path, $arg) {
  * Implementation of hook_permission()
  */
 function reftagger_permission() {
-  return array('administer reftagger');
+  return array(
+    'administer reftagger' => array(
+      'title' => t('Administer Reftagger'),
+    ),
+  );
 }
 
 /**
