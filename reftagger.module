@@ -212,6 +212,16 @@ function reftagger_block_view($delta = '') {
  * Implements hook_block_configure().
  */
 function reftagger_block_configure($delta = '') {
+  $version_options = reftagger_bible_versions();
+  $form['reftagger_cp_versions'] = array(
+    '#type' => 'select',
+    '#title' => t('Bible Version'),
+    '#multiple' => TRUE,
+    '#size' => 8,
+    '#options' => $version_options,
+    '#default_value' => variable_get('reftagger_cp_versions', array('ESV', 'KJV', 'NKJV', 'YLT')),
+    '#description' => t('Select which versions you\'d like displayed in your control panel. <em>Note: At the time of this module\'s publication, only the English versions work with the Reftagger control panel feature.</em>'),
+  );
   $form['reftagger_cp_template'] = array(
     '#type' => 'radios',
     '#title' => t('Control Panel Template'),
@@ -225,6 +235,7 @@ function reftagger_block_configure($delta = '') {
  * Implements hook_block_save().
  */
 function reftagger_block_save($delta = '', $edit = array()) {
+  variable_set('reftagger_cp_versions', $edit['reftagger_cp_versions']);
   variable_set('reftagger_cp_template', $edit['reftagger_cp_template']);
 }
 
@@ -318,6 +329,12 @@ function reftagger_tags() {
  * Implementation of hook_init()
  */
 function reftagger_init() {
+  // Control panel javascript to indicate currently selected version
+  drupal_add_library('system', 'jquery.cookie');
+  $cp_script = 'var rtUserVersion = jQuery.cookie("lbsRefTaggerPrefs").split(".")[0]; ';
+  $cp_script .= 'if (rtUserVersion != null) { jQuery("#lbsVersion").val(rtUserVersion); }';
+  drupal_add_js($cp_script, array('type' => 'inline', 'scope' => 'footer'));
+  
   // Should a local cached copy of reftagger.js be used?
   if (variable_get('reftagger_cachejs', 0) && $source = _reftagger_cachejs(REFTAGGER_JS_URL)) {
     drupal_add_js($source, array('scope' => 'footer'));
@@ -368,6 +385,7 @@ function reftagger_page_alter(&$page) {
     $script_ln[] = 'Logos.ReferenceTagging.lbsCaseInsensitive = true;';
   }
 
+  $script_ln[] = 'Logos.ReferenceTagging.lbsTargetSite = "biblia";';
   $script_ln[] = 'Logos.ReferenceTagging.tag();';
   $script = implode("\n", $script_ln);
   $page['footer']['reftagger']['#attached']['js'][$script] = array(
@@ -425,25 +443,60 @@ function reftagger_exclude_tags() {
 /**
  * Return an array list of Bible version options for tooltips
  */
-function reftagger_bible_versions() {
+function reftagger_bible_versions($abbr = FALSE) {
   return array(
-    'AB' => 'AMP',
-    'ASV' => 'ASV',
-    'DAR' => 'DARBY',
-    'ESV' => 'ESV',
-    'GW' => 'GW',
-    'HCSB' => 'HCSB',
-    'KJV' => 'KJV',
-    'LEB' => 'LEB',
-    'MESSAGE' => 'MESSAGE',
-    'NASB' => 'NASB',
-    'NCV' => 'NCV',
-    'NIV' => 'NIV',
-    'NIRV' => 'NIRV',
-    'NKJV' => 'NKJV',
-    'NLT' => 'NLT',
-    'TNIV' => 'TNIV',
-    'YLT' => 'YLT',
+    'English' => array(
+      'AB' => $abbr ? 'AMP' : 'Amplified',
+      'ASV' => $abbr ? 'ASV' : 'American Standard Version',
+      'DAR' => $abbr ? 'DARBY' : '1890 Darby Bible',
+      'ESV' => $abbr ? 'ESV' : 'English Standard Version',
+      'GW' => $abbr ? 'GW' : 'God\'s Word Translation',
+      'HCSB' => $abbr ? 'HCSB' : 'Holman Christian Standard Bible',
+      'KJV' => $abbr ? 'KJV' : 'King James Version',
+      'LEB' => $abbr ? 'LEB' : 'Lexham English Bible',
+      'MESSAGE' => $abbr ? 'MESSAGE' : 'The Message',
+      'NASB' => $abbr ? 'NASB' : 'New American Standard',
+      'NCV' => $abbr ? 'NCV' : 'New Century Version',
+      'GS-NETBIBLE' => $abbr ? 'NET' : 'The NET Bible',
+      'NIV' => $abbr ? 'NIV' : 'New International Version',
+      'NIRV' => $abbr ? 'NIRV' : 'New International Reader\'s Version',
+      'NKJV' => $abbr ? 'NKJV' : 'New King James Version',
+      'NLT' => $abbr ? 'NLT' : 'New Living Translation',
+      'TNIV' => $abbr ? 'TNIV' : 'Today\'s New International Version',
+      'YLT' => $abbr ? 'YLT' : 'Young\'s Literal Translation',
+    ),
+    'Arabic' => array(
+      'AR-VANDYKE' => $abbr ? 'Arabic' : 'Arabic Bible (Smith & Van Dyke)',
+    ),
+    'Czech' => array(
+      'CS-KR1579' => $abbr ? 'KR1579' : 'Podle Puvodního Vydání Kralického',
+    ),
+    'French' => array(
+      'LSG' => $abbr ? 'LSG' : 'Louis Segond',
+    ),
+    'German' => array(
+      'LUO1545' => $abbr ? 'LUO1545' : 'Luther Bibel (1545)',
+      'LU1912' => $abbr ? 'LU1912' : 'Luther Bibel (1912)',
+    ),
+    'Greek' => array(
+      'TISCH' => $abbr ? 'TISCH' : 'Novum Testamentum Graece',
+      'TISCHNT' => $abbr ? 'TISCHNT' : 'Novum Testamentum Graece (Tischendorf)',
+    ),
+    'Hungarian' => array(
+      'HU-BIBLE' => $abbr ? 'SZENT' : 'Szent Biblia',
+    ),
+    'Italian' => array(
+      'IT-DIODATI1649' => $abbr ? 'DIODATI' : 'Giovanni Diodati Bibbia',
+    ),
+    'Russian' => array(
+      'RST' => $abbr ? 'RST' : 'Русский Синодальный Перевод (1876/1956)',
+    ),
+    'Spanish' => array(
+      'RVA' => $abbr ? 'RVA' : 'Reina-Valera Actualizada',
+      'NBLH' => $abbr ? 'NBLH' : 'Nueva Biblia de los Hispanos',
+      'LBLA95' => $abbr ? 'LBLA' : 'La Biblia de las Américas',
+      'BB-UBS-BLS' => $abbr ? 'TLA' : 'Traducción en lenguaje actual',
+    ),
   );
 }
 
@@ -460,13 +513,28 @@ function reftagger_libronix_versions() {
  * @see reftagger-control-panel.tpl.php
  */
 function template_preprocess_reftagger_control_panel(&$vars) {
-  $vars['version_options'] = reftagger_bible_versions();
+  $all_options = reftagger_bible_versions(TRUE);
+  $choices = variable_get('reftagger_cp_versions', array('ESV', 'KJV', 'NKJV', 'YLT'));
+  
+  foreach ($all_options as $group) {
+    foreach ($group as $key => $option) {
+      if (in_array($key, $choices)) {
+        $cp_options[$key] = $option;
+      }
+    }
+  }
   $current_version = '';
   if (isset($_COOKIE['lbsRefTaggerPrefs'])) {
     list($current_version) = explode('.', $_COOKIE['lbsRefTaggerPrefs']);
   }
-  if (!in_array($current_version, array_keys($vars['version_options']))) {
+  if (!in_array($current_version, array_keys($cp_options))) {
     $current_version = variable_get('reftagger_bible_version', 'KJV');
   }
-  $vars['current_version'] = $current_version;
+  $form['reftagger_bible_version'] = array(
+    '#type' => 'select',
+    '#options' => $cp_options,
+    '#default_value' => $current_version,
+  );
+  $vars['version_options'] = form_select_options($form['reftagger_bible_version']);
+
 }

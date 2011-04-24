@@ -19,9 +19,7 @@
     <a href="http://www.logos.com/reftagger"><div id="lbsHeader">Bible Options</div></a>
     <div id="lbsVersionContainer">
       <select id="lbsVersion">
-        <?php foreach($version_options as $key => $version): ?>
-          <option value="<?php print $key;?>"<?php print $current_version == $key ? ' selected="selected"' : '';?>><?php print $version;?></option>
-        <?php endforeach; ?>
+        <?php print $version_options; ?>
       </select>
     </div>
     <div id="lbsLibronixContainer">
