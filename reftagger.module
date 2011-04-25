@@ -331,8 +331,8 @@ function reftagger_tags() {
 function reftagger_init() {
   // Control panel javascript to indicate currently selected version
   drupal_add_library('system', 'jquery.cookie');
-  $cp_script = 'var rtUserVersion = jQuery.cookie("lbsRefTaggerPrefs").split(".")[0]; ';
-  $cp_script .= 'if (rtUserVersion != null) { jQuery("#lbsVersion").val(rtUserVersion); }';
+  $cp_script = 'var rtUserVersion = jQuery.cookie("lbsRefTaggerPrefs"); ';
+  $cp_script .= 'if (rtUserVersion != null) { jQuery("#lbsVersion").val(rtUserVersion.split(".")[0]); }';
   drupal_add_js($cp_script, array('type' => 'inline', 'scope' => 'footer'));
   
   // Should a local cached copy of reftagger.js be used?
