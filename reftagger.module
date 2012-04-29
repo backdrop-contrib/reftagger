@@ -462,6 +462,8 @@ function reftagger_bible_versions($abbr = FALSE) {
       'NIRV' => $abbr ? 'NIRV' : 'New International Reader\'s Version',
       'NKJV' => $abbr ? 'NKJV' : 'New King James Version',
       'NLT' => $abbr ? 'NLT' : 'New Living Translation',
+      'NRSV' => $abbr ? 'NRSV' : 'New Revised Standard Version',
+      'RSV' => $abbr ? 'RSV' : 'Revised Standard Version',
       'TNIV' => $abbr ? 'TNIV' : 'Today\'s New International Version',
       'YLT' => $abbr ? 'YLT' : 'Young\'s Literal Translation',
     ),
