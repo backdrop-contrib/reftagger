@@ -1,7 +1,3 @@
 name = "RefTagger"
-description = Adds RefTagger javascript code to all your site's pages.
+description = "Adds RefTagger Javascript code to all your site's pages."
 core = 7.x
-
-files[] = reftagger-control-panel.tpl.php
-files[] = reftagger.module
-files[] = reftaggers.install
