@@ -4,14 +4,23 @@
     "reftagger_bible_version": "KJV",
     "reftagger_bible_reader": "biblia",
     "reftagger_case_insensitive": "0",
-    "reftagger_social_sharing": "dynamic value in file /reftagger/reftagger.module line 338",
+    "reftagger_social_sharing": {
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "google": "Google+",
+        "faithlife": "Faithlife"
+    },
     "reftagger_chapter_tagging": "0",
     "reftagger_link_target": "1",
     "reftagger_tooltip_enable": "1",
     "reftagger_logos_icon_link": "0",
     "reftagger_logos_icon_type": "light",
     "reftagger_logos_icon_add": "0",
-    "reftagger_exclude_tags": "dynamic value in file /reftagger/reftagger.module line 377",
+    "reftagger_exclude_tags": [
+        "h1",
+        "h2",
+        "h3"
+    ],
     "reftagger_exclude_classes": "",
     "reftagger_drop_shadow": "1",
     "reftagger_rounded_corners": "0",
