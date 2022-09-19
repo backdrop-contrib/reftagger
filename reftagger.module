@@ -113,8 +113,8 @@ function reftagger_admin_settings_form() {
     '#default_value' => $config->get('reftagger_logos_icon_link'),
     '#description' => t('Insert an icon linking to the verse in Logos Bible Software (if available).'),
   );
-  $dark_icon = '<img src="http://www.logos.com/images/Corporate/LibronixLink_dark.png" />';
-  $light_icon = '<img src="http://www.logos.com/images/Corporate/LibronixLink_light.png" />';
+  $dark_icon = '<img src="https://www.logos.com/images/Corporate/LibronixLink_dark.png" />';
+  $light_icon = '<img src="https://www.logos.com/images/Corporate/LibronixLink_light.png" />';
   $form['logos']['reftagger_logos_icon_type'] = array(
     '#type' => 'radios',
     '#title' => t('Logos link icons'),
