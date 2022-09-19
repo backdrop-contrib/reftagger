@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Backdrop module for RefTagger (https://reftagger.com/).
@@ -402,7 +401,6 @@ function reftagger_exclude_tags() {
 function reftagger_bible_versions($abbr = FALSE) {
   return array(
     'English' => array(
-      'AB' => $abbr ? 'AMP' : 'Amplified',
       'ASV' => $abbr ? 'ASV' : 'American Standard Version',
       'DAR' => $abbr ? 'DARBY' : '1890 Darby Bible',
       'ESV' => $abbr ? 'ESV' : 'English Standard Version',
@@ -420,7 +418,6 @@ function reftagger_bible_versions($abbr = FALSE) {
       'NLT' => $abbr ? 'NLT' : 'New Living Translation',
       'NRSV' => $abbr ? 'NRSV' : 'New Revised Standard Version',
       'RSV' => $abbr ? 'RSV' : 'Revised Standard Version',
-      'TNIV' => $abbr ? 'TNIV' : 'Today\'s New International Version',
       'YLT' => $abbr ? 'YLT' : 'Young\'s Literal Translation',
     ),
     'Arabic' => array(
@@ -453,7 +450,6 @@ function reftagger_bible_versions($abbr = FALSE) {
       'RVA' => $abbr ? 'RVA' : 'Reina-Valera Actualizada',
       'NBLH' => $abbr ? 'NBLH' : 'Nueva Biblia de los Hispanos',
       'LBLA95' => $abbr ? 'LBLA' : 'La Biblia de las Américas',
-      'BB-UBS-BLS' => $abbr ? 'TLA' : 'Traducción en lenguaje actual',
     ),
   );
 }
