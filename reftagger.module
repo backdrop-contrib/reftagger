@@ -299,7 +299,6 @@ function _reftagger_get_social_sharing_options($keys_only = FALSE) {
   $options = array(
     'twitter' => t('Twitter'),
     'facebook' => t('Facebook'),
-    'google' => t('Google+'),
     'faithlife' => t('Faithlife'),
   );
 
