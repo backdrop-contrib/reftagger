@@ -6,16 +6,6 @@
  */
 
 /**
- * Implements hook_help().
- */
-function reftagger_help($path, $arg) {
-  switch ($path) {
-    case 'admin/settings/reftagger':
-      return t('<a href="@rt_url">RefTagger</a> is an amazing, free new web tool that instantly makes all the Bible references on your site come alive! Bare links turn into hyperlinks to the full text of the passage at Bible.Logos.com, making it easy for your readers to access the text of Scripture with just a click. Even better, RefTagger brings the text right to your readers by generating a tooltip window that pops up instantly when they hover over the reference. You can also have RefTagger add an  icon that is hyperlinked to the passage in Libronix.', array('@rt_url' => 'http://www.logos.com/reftagger'));
-  }
-}
-
-/**
  * Implements hook_permission().
  */
 function reftagger_permission() {
