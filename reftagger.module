@@ -2,11 +2,11 @@
 
 /**
  * @file
- * Drupal module for RefTagger (http://reftagger.com/).
+ * Backdrop module for RefTagger (http://reftagger.com/).
  */
 
 /**
- * Implementation of hook_help()
+ * Implements hook_help().
  */
 function reftagger_help($path, $arg) {
   switch ($path) {
@@ -16,7 +16,7 @@ function reftagger_help($path, $arg) {
 }
 
 /**
- * Implementation of hook_permission()
+ * Implements hook_permission().
  */
 function reftagger_permission() {
   return array(
@@ -27,13 +27,13 @@ function reftagger_permission() {
 }
 
 /**
- * Implementation of hook_menu()
+ * Implements hook_menu().
  */
 function reftagger_menu() {
   $items['admin/config/services/reftagger'] = array(
     'title' => 'RefTagger',
     'description' => t('Configure the settings for RefTagger on your site.'),
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('reftagger_admin_settings_form'),
     'access arguments' => array('administer reftagger'),
     'type' => MENU_NORMAL_ITEM,
@@ -43,15 +43,28 @@ function reftagger_menu() {
 }
 
 /**
- * Implementation of hook_admin_settings() for configuring the module
+ * Implements hook_config_info().
+ */
+function reftagger_config_info() {
+  $prefixes['reftagger.settings'] = array(
+    'label' => t('RefTagger settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
+}
+
+/**
+ * Implements hook_admin_settings() for configuring the module().
  */
 function reftagger_admin_settings_form() {
+  $config = config('reftagger.settings');
   $version_options = reftagger_bible_versions();
+  $form['#config'] = 'reftagger.settings';
   $form['reftagger_bible_version'] = array(
     '#type' => 'select',
     '#title' => t('Bible Version'),
     '#options' => $version_options,
-    '#default_value' => variable_get('reftagger_bible_version', 'KJV'),
+    '#default_value' => $config->get('reftagger_bible_version'),
     '#description' => t('Select a Bible version to use. RefTagger may not support some Bible versions in the ToolTip feature.'),
   );
   $form['reftagger_bible_reader'] = array(
@@ -61,12 +74,12 @@ function reftagger_admin_settings_form() {
       'biblia' => t('Biblia'),
       'bible.faithlife' => t('Faithlife Study Bible'),
     ),
-    '#default_value' => variable_get('reftagger_bible_reader', 'biblia'),
+    '#default_value' => $config->get('reftagger_bible_reader'),
   );
   $form['reftagger_case_insensitive'] = array(
     '#type' => 'checkbox',
     '#title' => t('Case Insensitive?'),
-    '#default_value' => variable_get('reftagger_case_insensitive', 0) ? 1 : 0,
+    '#default_value' => $config->get('reftagger_case_insensitive') ? 1 : 0,
     '#description' => t('By default Reftagger only tags references using proper name capitalization (2 Corinthians 5:20). Check this to make Reftagger case insensitive (2 corinthians 5:20, 2 CORINTHIANS 5:20).'),
   );
   $form['reftagger_social_sharing'] = array(
@@ -74,14 +87,14 @@ function reftagger_admin_settings_form() {
     '#multiple' => TRUE,
     '#title' => t('Social sharing'),
     '#options' => _reftagger_get_social_sharing_options(),
-    '#default_value' => variable_get('reftagger_social_sharing', drupal_map_assoc(_reftagger_get_social_sharing_options(TRUE))),
+    '#default_value' => $config->get('reftagger_social_sharing'),
     '#description' => t('Select which social icons to appear in tool-tip.'),
   );
   $form['reftagger_chapter_tagging'] = array(
     '#type' => 'checkbox',
     '#title' => t('Chapter-level tagging'),
     '#description' => t('Enables tagging of chapters without verses (e.g. Genesis 12).'),
-    '#default_value' => variable_get('reftagger_chapter_tagging', 0),
+    '#default_value' => $config->get('reftagger_chapter_tagging'),
   );
   $form['reftagger_link_target'] = array(
     '#type' => 'radios',
@@ -90,12 +103,12 @@ function reftagger_admin_settings_form() {
       t('Existing window'),
       t('New window'),
     ),
-    '#default_value' => variable_get('reftagger_link_target', 1),
+    '#default_value' => $config->get('reftagger_link_target'),
   );
   $form['reftagger_tooltip_enable'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show ToolTips'),
-    '#default_value' => variable_get('reftagger_tooltip_enable', 1),
+    '#default_value' => $config->get('reftagger_tooltip_enable'),
     '#description' => t('Show a tooltip containing verse text when the mouse hovers over a reference.'),
   );
 
@@ -107,7 +120,7 @@ function reftagger_admin_settings_form() {
   $form['logos']['reftagger_logos_icon_link'] = array(
     '#type' => 'checkbox',
     '#title' => t('Add Logos buttons to tooltip'),
-    '#default_value' => variable_get('reftagger_logos_icon_link', 0),
+    '#default_value' => $config->get('reftagger_logos_icon_link'),
     '#description' => t('Insert an icon linking to the verse in Logos Bible Software (if available).'),
   );
   $dark_icon = '<img src="http://www.logos.com/images/Corporate/LibronixLink_dark.png" />';
@@ -119,7 +132,7 @@ function reftagger_admin_settings_form() {
       'light' => $light_icon . t(' Light (for sites with dark backgrounds)'),
       'dark' => $dark_icon . t(' Dark (for sites with light backgrounds)'),
     ),
-    '#default_value' => variable_get('reftagger_logos_icon_type', 'light'),
+    '#default_value' => $config->get('reftagger_logos_icon_type'),
     '#states' => array(
       'visible' => array(
         ':input[name="reftagger_logos_icon_link"]' => array('checked' => TRUE),
@@ -129,7 +142,7 @@ function reftagger_admin_settings_form() {
   $form['logos']['reftagger_logos_icon_add'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Reftagger on existing Biblia links'),
-    '#default_value' => variable_get('reftagger_logos_icon_add', 0),
+    '#default_value' => $config->get('reftagger_logos_icon_add'),
   );
 
   $form['exclusions'] = array(
@@ -141,14 +154,14 @@ function reftagger_admin_settings_form() {
   $form['exclusions']['reftagger_exclude_tags'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Exclude tags'),
-    '#default_value' => variable_get('reftagger_exclude_tags', array('h1', 'h2', 'h3')),
+    '#default_value' => $config->get('reftagger_exclude_tags'),
     '#options' => reftagger_tags(),
     '#description' => t('Do not search these HTML tags.'),
   );
   $form['exclusions']['reftagger_exclude_classes'] = array(
     '#type' => 'textfield',
     '#title' => t('Exclude classes'),
-    '#default_value' => variable_get('reftagger_exclude_classes', ''),
+    '#default_value' => $config->get('reftagger_exclude_classes'),
     '#description' => t('A comma-separated list of HTML tag classes that should exclude RefTagger functionality'),
   );
 
@@ -160,12 +173,12 @@ function reftagger_admin_settings_form() {
   $form['styles']['reftagger_drop_shadow'] = array(
     '#type' => 'checkbox',
     '#title' => t('Drop shadow'),
-    '#default_value' => variable_get('reftagger_drop_shadow', 1),
+    '#default_value' => $config->get('reftagger_drop_shadow'),
   );
   $form['styles']['reftagger_rounded_corners'] = array(
     '#type' => 'checkbox',
     '#title' => t('Rounded corners'),
-    '#default_value' => variable_get('reftagger_rounded_corners', 0),
+    '#default_value' => $config->get('reftagger_rounded_corners'),
   );
   $form['styles']['reftagger_background_color'] = array(
     '#type' => 'radios',
@@ -174,10 +187,10 @@ function reftagger_admin_settings_form() {
       'light' => t('Light'),
       'dark' => t('Dark'),
     ),
-    '#default_value' => variable_get('reftagger_background_color', 'light'),
+    '#default_value' => $config->get('reftagger_background_color'),
   );
 
-  $styles = variable_get('reftagger_custom_styles', array());
+  $styles = $config->get('reftagger_custom_styles');
   $form['reftagger_custom_styles'] = array(
     '#type' => 'fieldset',
     '#title' => t('Custom styles'),
@@ -221,7 +234,7 @@ function reftagger_admin_settings_form() {
     '#default_value' => isset($styles['heading']['fontSize'])
         ? $styles['heading']['fontSize']
         : '14px',
-    '#options' => drupal_map_assoc(array('12px', '14px', '16px', '18px')),
+    '#options' => backdrop_map_assoc(array('12px', '14px', '16px', '18px')),
   );
   $form['reftagger_custom_styles']['heading']['backgroundColor'] = array(
     '#type' => 'textfield',
@@ -300,7 +313,7 @@ function _reftagger_get_social_sharing_options($keys_only = FALSE) {
     'faithlife' => t('Faithlife'),
   );
 
-  return $keys_only ? array_keys($options) : $options;
+  return $keys_only?array_keys($options) : $options;
 }
 
 /**
@@ -319,28 +332,33 @@ function reftagger_tags() {
     'h3' => 'Header 3',
     'h4' => 'Header 4',
     'h5' => 'Header 5',
-    'h6' => 'Header 6'
+    'h6' => 'Header 6',
   );
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function reftagger_page_build(&$page) {
+  $config = config('reftagger.settings');
   if (path_is_admin(current_path())) {
     return;
   }
 
   $settings = array(
-    'bibleVersion' => variable_get('reftagger_bible_version', 'KJV'),
-    'linksOpenNewWindow' => (bool) variable_get('reftagger_link_target', 1),
-    'useTooltip' => (bool) variable_get('reftagger_tooltip_enable', 1),
-    'caseInsensitive' => (bool) variable_get('reftagger_case_insensitive', 0),
-    'dropShadow' => (bool) variable_get('reftagger_drop_shadow', 1),
-    'roundCorners' => (bool) variable_get('reftagger_rounded_corners', 0),
-    'socialSharing' => array_values(variable_get('reftagger_social_sharing', _reftagger_get_social_sharing_options(TRUE))),
-    'addLogosLink' => (bool) variable_get('reftagger_logos_icon_link', 0),
-    'logosLinkIcon' => variable_get('reftagger_logos_icon_type', 'light'),
-    'convertHyperlinks' => (bool) variable_get('reftagger_logos_icon_add', 0),
-    'tagChapters' => (bool) variable_get('reftagger_chapter_tagging', 0),
-    'tooltipStyle' => variable_get('reftagger_background_color', 'light'),
+    'bibleVersion' => $config->get('reftagger_bible_version'),
+    'linksOpenNewWindow' => (bool) $config->get('reftagger_link_target'),
+    'useTooltip' => (bool) $config->get('reftagger_tooltip_enable'),
+    'caseInsensitive' => (bool) $config->get('reftagger_case_insensitive'),
+    'dropShadow' => (bool) $config->get('reftagger_drop_shadow'),
+    'roundCorners' => (bool) $config->get('reftagger_rounded_corners'),
+    'socialSharing' => array_values($config->get('reftagger_social_sharing')),
+    'addLogosLink' => (bool) $config->get('reftagger_logos_icon_link'),
+    'logosLinkIcon' => $config->get('reftagger_logos_icon_type'),
+    'convertHyperlinks' => (bool) $config->get('reftagger_logos_icon_add'),
+    'tagChapters' => (bool) $config->get('reftagger_chapter_tagging'),
+    'tooltipStyle' => $config->get('reftagger_background_color'),
   );
 
   $exclude_tags = reftagger_exclude_tags();
@@ -348,25 +366,25 @@ function reftagger_page_build(&$page) {
     $settings['noSearchTagNames'] = $exclude_tags;
   }
 
-  $class_list = str_replace(' ', '', variable_get('reftagger_exclude_classes', ''));
+  $class_list = str_replace(' ', '', $config->get('reftagger_exclude_classes'));
   if (!empty($class_list)) {
     $settings['noSearchClassNames'] = explode(',', $class_list);
   }
 
-  $bible_reader = variable_get('reftagger_bible_reader', 'biblia');
+  $bible_reader = $config->get('reftagger_bible_reader');
   if ($bible_reader !== 'biblia') {
     $settings['bibleReader'] = $bible_reader;
   }
 
-  $styles = variable_get('reftagger_custom_styles');
+  $styles = $config->get('reftagger_custom_styles');
   if ($styles) {
     $settings['customStyle'] = $styles;
   }
 
-  $page['page_bottom']['#attached']['js'][] = drupal_get_path('module', 'reftagger') . '/reftagger.js';
+  $page['page_bottom']['#attached']['js'][] = backdrop_get_path('module', 'reftagger') . '/reftagger.js';
   $page['page_bottom']['#attached']['js'][] = array(
     'type' => 'setting',
-    'data' => array('refTagger' => $settings)
+    'data' => array('refTagger' => $settings),
   );
 }
 
@@ -374,7 +392,7 @@ function reftagger_page_build(&$page) {
  * Grab the exclude tags and add synonym tags
  */
 function reftagger_exclude_tags() {
-  $exclude_tags = variable_get('reftagger_exclude_tags', array('h1', 'h2', 'h3'));
+  $exclude_tags = config_get('reftagger.settings', 'reftagger_exclude_tags');
   foreach ($exclude_tags as $tag) {
     if ($tag) {
       $tags[] = $tag;

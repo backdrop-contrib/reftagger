@@ -7,7 +7,7 @@
  */
 
 /**
- * Implementation of hook_uninstall().
+ * Implements hook_uninstall().
  */
 function reftagger_uninstall() {
   $names = db_query(
@@ -18,34 +18,64 @@ function reftagger_uninstall() {
   array_map('variable_del', $names);
 }
 
+// TODO The old hook_update_N functions cannot be applied to Backdrop.
+function reftagger_update_7200(&$sandbox) { }
+
 /**
- * Remove deprecated variables used in old version.
+ * Implements hook_update_last_removed().
  */
-function reftagger_update_7200(&$sandbox) {
-  $names = array(
-    'reftagger_cp_versions',
-    'reftagger_cp_template',
-    'reftagger_cachejs',
-    'reftagger_last_cachejs',
-    'reftagger_css_override',
-    'reftagger_libronix_bible_version',
-  );
-  array_map('variable_del', $names);
+function reftagger_update_last_removed() {
+  return 7200;
+}
 
-  $to_migrate = array(
-    'reftagger_libronix_icon_link' => 'reftagger_logos_icon_link',
-    'reftagger_libronix_icon_add' => 'reftagger_logos_icon_add',
-  );
-  foreach ($to_migrate as $old => $new) {
-    $value = variable_get($old);
-    if (isset($value)) {
-      variable_set($new, $value);
-    }
-  }
+/**
+ * Migrate reftagger variables to config.
+ */
+function reftagger_update_1000() {
+  $config = config('reftagger.settings');
+  $config->set('reftagger_libronix_icon_type', update_variable_get('reftagger_libronix_icon_type', ''));
+  $config->set('reftagger_bible_version', update_variable_get('reftagger_bible_version', 'KJV'));
+  $config->set('reftagger_bible_reader', update_variable_get('reftagger_bible_reader', 'biblia'));
+  $config->set('reftagger_case_insensitive', update_variable_get('reftagger_case_insensitive', '0'));
+  $config->set('reftagger_social_sharing', update_variable_get('reftagger_social_sharing', 'dynamic value in file /reftagger/reftagger.module line 338'));
+  $config->set('reftagger_chapter_tagging', update_variable_get('reftagger_chapter_tagging', '0'));
+  $config->set('reftagger_link_target', update_variable_get('reftagger_link_target', '1'));
+  $config->set('reftagger_tooltip_enable', update_variable_get('reftagger_tooltip_enable', '1'));
+  $config->set('reftagger_logos_icon_link', update_variable_get('reftagger_logos_icon_link', '0'));
+  $config->set('reftagger_logos_icon_type', update_variable_get('reftagger_logos_icon_type', 'light'));
+  $config->set('reftagger_logos_icon_add', update_variable_get('reftagger_logos_icon_add', '0'));
+  $config->set('reftagger_exclude_tags', update_variable_get('reftagger_exclude_tags', 'dynamic value in file /reftagger/reftagger.module line 377'));
+  $config->set('reftagger_exclude_classes', update_variable_get('reftagger_exclude_classes', ''));
+  $config->set('reftagger_drop_shadow', update_variable_get('reftagger_drop_shadow', '1'));
+  $config->set('reftagger_rounded_corners', update_variable_get('reftagger_rounded_corners', '0'));
+  $config->set('reftagger_background_color', update_variable_get('reftagger_background_color', 'light'));
+  $config->set('reftagger_custom_styles', update_variable_get('reftagger_custom_styles', ''));
+  $config->save();
 
-  // The icon type's value should be changed to 'dark' for 0 and 'light' for 1.
-  $icon_type = variable_get('reftagger_libronix_icon_type');
-  if (isset($icon_type)) {
-    variable_set('reftagger_logos_icon_type', $icon_type == 0 ? 'dark' : 'light');
-  }
+  update_variable_del('reftagger_libronix_icon_type');
+  update_variable_del('reftagger_bible_version');
+  update_variable_del('reftagger_bible_reader');
+  update_variable_del('reftagger_case_insensitive');
+  update_variable_del('reftagger_social_sharing');
+  update_variable_del('reftagger_chapter_tagging');
+  update_variable_del('reftagger_link_target');
+  update_variable_del('reftagger_tooltip_enable');
+  update_variable_del('reftagger_logos_icon_link');
+  update_variable_del('reftagger_logos_icon_type');
+  update_variable_del('reftagger_logos_icon_add');
+  update_variable_del('reftagger_exclude_tags');
+  update_variable_del('reftagger_exclude_classes');
+  update_variable_del('reftagger_drop_shadow');
+  update_variable_del('reftagger_rounded_corners');
+  update_variable_del('reftagger_background_color');
+  update_variable_del('reftagger_custom_styles');
+}
+
+/**
+ * Implements hook_install().
+ */
+function reftagger_install() {
+  // Dynamically generated variable data was detected.
+  // /reftagger/reftagger.module line 338
+  // /reftagger/reftagger.module line 377
 }

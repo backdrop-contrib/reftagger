@@ -1,3 +1,4 @@
 name = "RefTagger"
 description = "Adds RefTagger Javascript code to all your site's pages."
-core = 7.x
+backdrop = 1.x
+type = module
