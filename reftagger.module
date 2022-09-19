@@ -370,7 +370,7 @@ function reftagger_preprocess_page(&$variables) {
     $settings['customStyle'] = $styles;
   }
 
-  backdrop_add_js(backdrop_get_path('module', 'reftagger') . '/reftagger.js','file');
+  backdrop_add_js(backdrop_get_path('module', 'reftagger') . '/js/reftagger.js','file');
   backdrop_add_js(array(
     'refTagger' => $settings,
   ),'setting');
