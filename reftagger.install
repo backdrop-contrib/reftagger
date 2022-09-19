@@ -1,25 +1,9 @@
 <?php
-
 /**
  * @file
  * Install, update and uninstall functions for the reftagger module.
  *
  */
-
-/**
- * Implements hook_uninstall().
- */
-function reftagger_uninstall() {
-  $names = db_query(
-    "SELECT name FROM {variable} WHERE name LIKE :pattern",
-    array(':pattern' => db_like('reftagger_') . '%'))
-  ->fetchCol();
-
-  array_map('variable_del', $names);
-}
-
-// TODO The old hook_update_N functions cannot be applied to Backdrop.
-function reftagger_update_7200(&$sandbox) { }
 
 /**
  * Implements hook_update_last_removed().
@@ -69,13 +53,4 @@ function reftagger_update_1000() {
   update_variable_del('reftagger_rounded_corners');
   update_variable_del('reftagger_background_color');
   update_variable_del('reftagger_custom_styles');
-}
-
-/**
- * Implements hook_install().
- */
-function reftagger_install() {
-  // Dynamically generated variable data was detected.
-  // /reftagger/reftagger.module line 338
-  // /reftagger/reftagger.module line 377
 }
