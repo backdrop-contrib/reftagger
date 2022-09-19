@@ -337,10 +337,10 @@ function reftagger_tags() {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Implements hook_preprocess_page
+ * Loads the script on every page
  */
-function reftagger_page_build(&$page) {
+function reftagger_preprocess_page(&$variables) {
   $config = config('reftagger.settings');
   if (path_is_admin(current_path())) {
     return;
@@ -381,11 +381,11 @@ function reftagger_page_build(&$page) {
     $settings['customStyle'] = $styles;
   }
 
-  $page['page_bottom']['#attached']['js'][] = backdrop_get_path('module', 'reftagger') . '/reftagger.js';
-  $page['page_bottom']['#attached']['js'][] = array(
-    'type' => 'setting',
-    'data' => array('refTagger' => $settings),
-  );
+  backdrop_add_js(backdrop_get_path('module', 'reftagger') . '/reftagger.js','file');
+  backdrop_add_js(array(
+    'refTagger' => $settings,
+  ),'setting');
+  return $variables;
 }
 
 /**
