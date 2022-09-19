@@ -1,7 +1,7 @@
 {
     "_config_name": "reftagger.settings",
     "reftagger_libronix_icon_type": "",
-    "reftagger_bible_version": "KJV",
+    "reftagger_bible_version": "NIV",
     "reftagger_bible_reader": "biblia",
     "reftagger_case_insensitive": "0",
     "reftagger_social_sharing": {
