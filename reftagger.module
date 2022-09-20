@@ -51,10 +51,10 @@ function reftagger_admin_settings_form() {
   $form['#config'] = 'reftagger.settings';
   $form['reftagger_bible_version'] = array(
     '#type' => 'select',
-    '#title' => t('Bible Version'),
+    '#title' => t('Default Bible Version'),
     '#options' => $version_options,
     '#default_value' => $config->get('reftagger_bible_version'),
-    '#description' => t('Select a Bible version to use. RefTagger may not support some Bible versions in the ToolTip feature.'),
+    '#description' => t('Select a default Bible version to use. All versions will work as the default (Genesis 1:1) but not all will work when entered with the bible reference as an override. For example, Genesis 1:1 (NIV) will work but Genesis 1:1 (RSV) will not work). Look for the short code in square brackets after the name. Note that the Greek versions are New Testament only.'),
   );
   $form['reftagger_bible_reader'] = array(
     '#type' => 'select',
@@ -401,24 +401,25 @@ function reftagger_exclude_tags() {
 function reftagger_bible_versions($abbr = FALSE) {
   return array(
     'English' => array(
-      'ASV' => $abbr ? 'ASV' : 'American Standard Version',
-      'DAR' => $abbr ? 'DARBY' : '1890 Darby Bible',
-      'ESV' => $abbr ? 'ESV' : 'English Standard Version',
-      'GW' => $abbr ? 'GW' : 'God\'s Word Translation',
-      'HCSB' => $abbr ? 'HCSB' : 'Holman Christian Standard Bible',
-      'KJV' => $abbr ? 'KJV' : 'King James Version',
-      'LEB' => $abbr ? 'LEB' : 'Lexham English Bible',
-      'MESSAGE' => $abbr ? 'MESSAGE' : 'The Message',
-      'NASB' => $abbr ? 'NASB' : 'New American Standard',
-      'NCV' => $abbr ? 'NCV' : 'New Century Version',
-      'GS-NETBIBLE' => $abbr ? 'NET' : 'The NET Bible',
-      'NIV' => $abbr ? 'NIV' : 'New International Version',
-      'NIRV' => $abbr ? 'NIRV' : 'New International Reader\'s Version',
-      'NKJV' => $abbr ? 'NKJV' : 'New King James Version',
-      'NLT' => $abbr ? 'NLT' : 'New Living Translation',
-      'NRSV' => $abbr ? 'NRSV' : 'New Revised Standard Version',
+      'ASV' => $abbr ? 'ASV' : 'American Standard Version [ASV]',
+      'DAR' => $abbr ? 'DARBY' : '1890 Darby Bible [DAR][DARBY]',
+      'ESV' => $abbr ? 'ESV' : 'English Standard Version [ESV]',
+      'GW' => $abbr ? 'GW' : 'God\'s Word Translation [GW]',
+      'GNB' => $abbr ? 'GNB' : 'The Good News Translation',
+      'HCSB' => $abbr ? 'HCSB' : 'Holman Christian Standard Bible [HCSB]',
+      'KJV' => $abbr ? 'KJV' : 'King James Version [KJV]',
+      'LEB' => $abbr ? 'LEB' : 'Lexham English Bible [LEB]',
+      'MESSAGE' => $abbr ? 'MESSAGE' : 'The Message [MESSAGE]',
+      'NASB' => $abbr ? 'NASB' : 'New American Standard [NASB]',
+      'NCV' => $abbr ? 'NCV' : 'New Century Version [NCV]',
+      'GS-NETBIBLE' => $abbr ? 'NET' : 'The NET Bible [NET]',
+      'NIV' => $abbr ? 'NIV' : 'New International Version [NIV]',
+      'NIRV' => $abbr ? 'NIRV' : 'New International Reader\'s Version [NIRV]',
+      'NKJV' => $abbr ? 'NKJV' : 'New King James Version [NKJV]',
+      'NLT' => $abbr ? 'NLT' : 'New Living Translation [NLT]',
+      'NRSV' => $abbr ? 'NRSV' : 'New Revised Standard Version [NRSV]',
       'RSV' => $abbr ? 'RSV' : 'Revised Standard Version',
-      'YLT' => $abbr ? 'YLT' : 'Young\'s Literal Translation',
+      'YLT' => $abbr ? 'YLT' : 'Young\'s Literal Translation [YLT]',
     ),
     'Arabic' => array(
       'AR-VANDYKE' => $abbr ? 'Arabic' : 'Arabic Bible (Smith & Van Dyke)',
@@ -427,18 +428,19 @@ function reftagger_bible_versions($abbr = FALSE) {
       'CS-KR1579' => $abbr ? 'KR1579' : 'Podle Puvodního Vydání Kralického',
     ),
     'French' => array(
-      'LSG' => $abbr ? 'LSG' : 'Louis Segond',
+      'LSG' => $abbr ? 'LSG' : 'Louis Segond [LSG]',
+      'S21' => $abbr ? 'S21' : 'La Bible Segond 21 [S21]',      
     ),
     'German' => array(
       'LUO1545' => $abbr ? 'LUO1545' : 'Luther Bibel (1545)',
       'LU1912' => $abbr ? 'LU1912' : 'Luther Bibel (1912)',
     ),
     'Greek' => array(
-      'TISCH' => $abbr ? 'TISCH' : 'Novum Testamentum Graece',
+      'TISCH' => $abbr ? 'TISCH' : 'Novum Testamentum Graece [TISCH]',
       'TISCHNT' => $abbr ? 'TISCHNT' : 'Novum Testamentum Graece (Tischendorf)',
     ),
     'Hungarian' => array(
-      'HU-BIBLE' => $abbr ? 'SZENT' : 'Szent Biblia',
+      'HU-BIBLE' => $abbr ? 'SZENT' : 'Szent Biblia [KAR]',
     ),
     'Italian' => array(
       'IT-DIODATI1649' => $abbr ? 'DIODATI' : 'Giovanni Diodati Bibbia',
