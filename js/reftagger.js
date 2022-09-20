@@ -5,7 +5,7 @@
   };
 
   /**
-   * Attaches RefTagger extenral JS, and attach settings.
+   * Attaches RefTagger external JS, and attach settings.
    */
   Backdrop.behaviors.refTagger = {
     attach: function(context, settings) {
