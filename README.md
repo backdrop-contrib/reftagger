@@ -8,8 +8,8 @@ admin.
 RefTagger supports a wide variety of English Bible translations as well as 
 translations in Arabic, Czech, French, German, Greek, Hungarian, Italian, 
 Russian and Spanish. While the default translation is set in the admin screen,
-individual references can be overridden within the text; see the wiki for more 
-information.
+individual references can be overridden, for several versions (but not all) 
+within the text; see the wiki for more information.
 
 The RefTagger service is provided by [Faithlife](https://faithlife.com/products/reftagger?ref=backdropcms) 
 and includes optional integration with their [Logos Bible Software](https://www.logos.com/?ref=backdropcms).
