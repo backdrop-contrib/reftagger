@@ -193,11 +193,11 @@ function reftagger_admin_settings_form() {
     '#collapsible' => FALSE,
   );
   $form['reftagger_custom_styles']['heading']['color'] = array(
-    '#type' => 'textfield',
+    '#type' => 'color',
     '#size' => 10,
     '#title' => t('Color'),
     '#default_value' => isset($styles['heading']['color']) ? $styles['heading']['color'] : '#333',
-    '#description' => t('Use CSS HEX value (e.g. #ff0000 for red)'),
+    '#description' => t('Choose the text color for the heading.'),
     '#element_validate' => array('reftagger_validate_color_hex'),
   );
   $default_font_family = "Arial, 'Helvetica Neue', Helvetica, sans-seri";
@@ -226,11 +226,11 @@ function reftagger_admin_settings_form() {
     '#options' => backdrop_map_assoc(array('12px', '14px', '16px', '18px')),
   );
   $form['reftagger_custom_styles']['heading']['backgroundColor'] = array(
-    '#type' => 'textfield',
+    '#type' => 'color',
     '#size' => 10,
     '#title' => t('Background color'),
     '#default_value' => isset($styles['heading']['backgroundColor']) ? $styles['heading']['backgroundColor'] : '#e7e7e7',
-    '#description' => t('Background color for heading. Use CSS HEX value (e.g. #ff0000 for red)'),
+    '#description' => t('Choose the background color for the heading.'),
     '#element_validate' => array('reftagger_validate_color_hex'),
   );
   $form['reftagger_custom_styles']['body'] = array(
@@ -244,6 +244,7 @@ function reftagger_admin_settings_form() {
   $form['reftagger_custom_styles']['body']['color']['#default_value'] = isset($styles['body']['color'])
       ? $styles['body']['color']
       : '#666';
+  $form['reftagger_custom_styles']['body']['color']['#description'] = t('Choose the text color for the verse text.');
 
   // The body font family field re-uses everything except default value from the
   // heading font family field.
@@ -266,7 +267,7 @@ function reftagger_admin_settings_form() {
   $form['reftagger_custom_styles']['body']['moreLink']['color']['#default_value'] = isset($styles['body']['moreLink']['color'])
       ? $styles['body']['moreLink']['color']
       : '#0080FF';
-
+  $form['reftagger_custom_styles']['body']['moreLink']['color']['#description'] = t('Choose the link color for the "more" link.');
   return system_settings_form($form);
 }
 
@@ -412,7 +413,7 @@ function reftagger_bible_versions($abbr = FALSE) {
       'MESSAGE' => $abbr ? 'MESSAGE' : 'The Message [MESSAGE]',
       'NASB' => $abbr ? 'NASB' : 'New American Standard [NASB]',
       'NCV' => $abbr ? 'NCV' : 'New Century Version [NCV]',
-      'GS-NETBIBLE' => $abbr ? 'NET' : 'The NET Bible [NET]',
+      'GS-NETBIBLE' => $abbr ? 'NET' : 'The NET (New English Translation) Bible [NET]',
       'NIV' => $abbr ? 'NIV' : 'New International Version [NIV]',
       'NIRV' => $abbr ? 'NIRV' : 'New International Reader\'s Version [NIRV]',
       'NKJV' => $abbr ? 'NKJV' : 'New King James Version [NKJV]',
