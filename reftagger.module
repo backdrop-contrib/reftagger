@@ -204,9 +204,7 @@ function reftagger_admin_settings_form() {
   $form['reftagger_custom_styles']['heading']['fontFamily'] = array(
     '#type' => 'select',
     '#title' => t('Font'),
-    '#default_value' => isset($styles['heading']['fontFamily'])
-        ? $styles['heading']['fontFamily']
-        : $default_font_family,
+    '#default_value' => isset($styles['heading']['fontFamily']) ? $styles['heading']['fontFamily'] : $default_font_family,
     '#options' => array(
       "Arial, 'Helvetica Neue', Helvetica, sans-serif" => 'Arial',
       "'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace" => 'Courier New',
@@ -220,9 +218,7 @@ function reftagger_admin_settings_form() {
   $form['reftagger_custom_styles']['heading']['fontSize'] = array(
     '#type' => 'select',
     '#title' => t('Font size'),
-    '#default_value' => isset($styles['heading']['fontSize'])
-        ? $styles['heading']['fontSize']
-        : '14px',
+    '#default_value' => isset($styles['heading']['fontSize']) ? $styles['heading']['fontSize'] : '14px',
     '#options' => backdrop_map_assoc(array('12px', '14px', '16px', '18px')),
   );
   $form['reftagger_custom_styles']['heading']['backgroundColor'] = array(
@@ -241,32 +237,24 @@ function reftagger_admin_settings_form() {
   // The body color field re-uses everything except default value from the
   // heading color field.
   $form['reftagger_custom_styles']['body']['color'] = $form['reftagger_custom_styles']['heading']['color'];
-  $form['reftagger_custom_styles']['body']['color']['#default_value'] = isset($styles['body']['color'])
-      ? $styles['body']['color']
-      : '#666';
+  $form['reftagger_custom_styles']['body']['color']['#default_value'] = isset($styles['body']['color']) ? $styles['body']['color'] : '#666';
   $form['reftagger_custom_styles']['body']['color']['#description'] = t('Choose the text color for the verse text.');
 
   // The body font family field re-uses everything except default value from the
   // heading font family field.
   $form['reftagger_custom_styles']['body']['fontFamily'] = $form['reftagger_custom_styles']['heading']['fontFamily'];
-  $form['reftagger_custom_styles']['body']['fontFamily']['#default_value'] = isset($styles['body']['fontFamily'])
-      ? $styles['body']['fontFamily']
-      : $default_font_family;
+  $form['reftagger_custom_styles']['body']['fontFamily']['#default_value'] = isset($styles['body']['fontFamily']) ? $styles['body']['fontFamily'] : $default_font_family;
 
   // The body font size field re-uses everything except default value from the
   // heading font size field.
   $form['reftagger_custom_styles']['body']['fontSize'] = $form['reftagger_custom_styles']['heading']['fontSize'];
-  $form['reftagger_custom_styles']['body']['fontSize']['#default_value'] = isset($styles['body']['fontSize'])
-      ? $styles['body']['fontSize']
-      : '14px';
+  $form['reftagger_custom_styles']['body']['fontSize']['#default_value'] = isset($styles['body']['fontSize']) ? $styles['body']['fontSize'] : '14px';
 
   // The link color field re-uses everything from heading color field, except
   // the default value and title.
   $form['reftagger_custom_styles']['body']['moreLink']['color'] = $form['reftagger_custom_styles']['heading']['color'];
   $form['reftagger_custom_styles']['body']['moreLink']['color']['#title'] = t('Link color');
-  $form['reftagger_custom_styles']['body']['moreLink']['color']['#default_value'] = isset($styles['body']['moreLink']['color'])
-      ? $styles['body']['moreLink']['color']
-      : '#0080FF';
+  $form['reftagger_custom_styles']['body']['moreLink']['color']['#default_value'] = isset($styles['body']['moreLink']['color']) ? $styles['body']['moreLink']['color'] : '#0080FF';
   $form['reftagger_custom_styles']['body']['moreLink']['color']['#description'] = t('Choose the link color for the "more" link.');
   return system_settings_form($form);
 }
@@ -297,12 +285,12 @@ function reftagger_validate_color_hex($element, &$form_state) {
  */
 function _reftagger_get_social_sharing_options($keys_only = FALSE) {
   $options = array(
-    'twitter' => t('Twitter'),
+    'twitter' => t('Twitter (X)'),
     'facebook' => t('Facebook'),
     'faithlife' => t('Faithlife'),
   );
 
-  return $keys_only?array_keys($options) : $options;
+  return $keys_only ? array_keys($options) : $options;
 }
 
 /**
@@ -326,7 +314,8 @@ function reftagger_tags() {
 }
 
 /**
- * Implements hook_preprocess_page
+ * Implements hook_preprocess_page().
+ *
  * Loads the script on every page
  */
 function reftagger_preprocess_page(&$variables) {
@@ -370,10 +359,10 @@ function reftagger_preprocess_page(&$variables) {
     $settings['customStyle'] = $styles;
   }
 
-  backdrop_add_js(backdrop_get_path('module', 'reftagger') . '/js/reftagger.js','file');
+  backdrop_add_js(backdrop_get_path('module', 'reftagger') . '/js/reftagger.js', 'file');
   backdrop_add_js(array(
     'refTagger' => $settings,
-  ),'setting');
+  ), 'setting');
   return $variables;
 }
 
@@ -430,7 +419,7 @@ function reftagger_bible_versions($abbr = FALSE) {
     ),
     'French' => array(
       'LSG' => $abbr ? 'LSG' : 'Louis Segond [LSG]',
-      'S21' => $abbr ? 'S21' : 'La Bible Segond 21 [S21]',      
+      'S21' => $abbr ? 'S21' : 'La Bible Segond 21 [S21]',
     ),
     'German' => array(
       'LUO1545' => $abbr ? 'LUO1545' : 'Luther Bibel (1545)',

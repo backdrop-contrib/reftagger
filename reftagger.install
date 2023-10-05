@@ -13,22 +13,33 @@ function reftagger_update_last_removed() {
 }
 
 /**
+ * Remove libronix_icon_type setting as not used anywhere.
+ */
+function reftagger_update_1001() {
+  config_clear('reftagger.settings', 'reftagger_libronix_icon_type');
+}
+
+/**
  * Migrate reftagger variables to config.
  */
 function reftagger_update_1000() {
   $config = config('reftagger.settings');
   $config->set('reftagger_libronix_icon_type', update_variable_get('reftagger_libronix_icon_type', ''));
-  $config->set('reftagger_bible_version', update_variable_get('reftagger_bible_version', 'KJV'));
+  $config->set('reftagger_bible_version', update_variable_get('reftagger_bible_version', 'NIV'));
   $config->set('reftagger_bible_reader', update_variable_get('reftagger_bible_reader', 'biblia'));
   $config->set('reftagger_case_insensitive', update_variable_get('reftagger_case_insensitive', '0'));
-  $config->set('reftagger_social_sharing', update_variable_get('reftagger_social_sharing', 'dynamic value in file /reftagger/reftagger.module line 338'));
+  $config->set('reftagger_social_sharing', update_variable_get('reftagger_social_sharing', array()));
   $config->set('reftagger_chapter_tagging', update_variable_get('reftagger_chapter_tagging', '0'));
   $config->set('reftagger_link_target', update_variable_get('reftagger_link_target', '1'));
   $config->set('reftagger_tooltip_enable', update_variable_get('reftagger_tooltip_enable', '1'));
   $config->set('reftagger_logos_icon_link', update_variable_get('reftagger_logos_icon_link', '0'));
   $config->set('reftagger_logos_icon_type', update_variable_get('reftagger_logos_icon_type', 'light'));
   $config->set('reftagger_logos_icon_add', update_variable_get('reftagger_logos_icon_add', '0'));
-  $config->set('reftagger_exclude_tags', update_variable_get('reftagger_exclude_tags', 'dynamic value in file /reftagger/reftagger.module line 377'));
+  $config->set('reftagger_exclude_tags', update_variable_get('reftagger_exclude_tags', array(
+    'h1',
+    'h2',
+    'h3',
+  )));
   $config->set('reftagger_exclude_classes', update_variable_get('reftagger_exclude_classes', ''));
   $config->set('reftagger_drop_shadow', update_variable_get('reftagger_drop_shadow', '1'));
   $config->set('reftagger_rounded_corners', update_variable_get('reftagger_rounded_corners', '0'));
