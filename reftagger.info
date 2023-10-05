@@ -1,4 +1,10 @@
-name = "RefTagger"
+name = RefTagger
 description = "Adds RefTagger Javascript code to all your site's pages."
 backdrop = 1.x
 type = module
+
+tags[] = Content
+tags[] = Bible
+tags[] = Formatters
+tags[] = Javascript
+tags[] = Web services
