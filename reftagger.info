@@ -3,6 +3,9 @@ description = "Adds RefTagger Javascript code to all your site's pages."
 backdrop = 1.x
 type = module
 
+maintainers[yorkshire-pudding] = Martin Price
+maintainers_wanted = TRUE
+
 tags[] = Content
 tags[] = Bible
 tags[] = Formatters
